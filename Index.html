@@ -13,103 +13,27 @@
 
 <body>
     <div id="Content">
-        <div id="Title">Rihanna but Worse</div>
+        <div id="Title">Rihanna but Worse, Turn one on</div>
         <button onclick="toggleSound(2)">DRY</button>
         <button onclick="toggleSound(0)">FREEVERB</button>
         <button onclick="toggleSound(1)">BITCRUSHER</button>
+        <button onclick="startSong()">start stem2</button>
+        <button onclick="bmpFaster()">FASTER</button>
+        <button onclick="bmpSlower()">SLOW YOUR ROLL RI</button>
+
     </div>
-    <script type="text/javascript" src="src/stem2.js"></script>
+    <!-- attach all javascript files here -->
+    <script src="src/stem2.js"></script>
     <script src="src/stem3.js"></script>
     <script src="src/stem4.js"></script>
     <script src="src/fullsong.js"></script>
+    <script src="src/main.js"></script>
+
+
+
     <script type="text/javascript">
-    // window.onload = function() {
 
+    </script>
+</body>
 
-
-    var toggleSound = function(index) {
-        //console.log("yo what up");
-
-        //toggling 
-        toggles[index] = 1 - toggles[index];
-
-
-
-        for (var i = 0; i < toggles.length; i++) {
-            switches[i].gate.value = toggles[i];
-        }
-
-    }
-
-
-
-    // var synth = new Tone.PolySynth(3, Tone.SimpleSynth, {
-    //  "oscillator" : {
-    //    "type" : "sine",
-    //    "count" : 3,
-    //    "spread" : 30
-    //  },
-    //  "envelope": {
-    //    "attack": 0.01,
-    //    "decay": 0.1,
-    //    "sustain": 0.5,
-    //    "release": 0.4,
-    //    "attackCurve" : "exponential"
-    //  },
-    // });
-
-
-    //array for holding the effects
-    var effects = [];
-
-    //create the effects individually
-    effects[0] = new Tone.Freeverb();
-    effects[1] = new Tone.BitCrusher(1);
-
-    //store the size of the effects array    
-    var numberEffects = effects.length;
-
-    //connect the synth to the effects
-    for (var i = 0; i < numberEffects; i++) {
-        synth.connect(effects[i]);
-    }
-
-    var toggles = [];
-
-    //array for holding the switches
-    var switches = [];
-
-    //create as many switches as effects plus one
-    //additional for the dry signal
-    for (var i = 0; i <= numberEffects; i++) {
-
-        toggles[i] = 0;
-
-        //create the switches
-        switches[i] = new Tone.Switch(false);
-
-        //connect the switches to master
-        switches[i].toMaster();
-
-        if (i < numberEffects) {
-            //connect effects to switches
-            effects[i].connect(switches[i]);
-        } else {
-            //connect the last switch to the original synth
-            synth.connect(switches[numberEffects]);
-        }
-
-
-
-    }
-
-
-    synth.volume.exponentialRampToValue(0, 2);
-
-
-    // }//everything done
-
-</script>
-
-    </body> 
-    </html>
+</html>

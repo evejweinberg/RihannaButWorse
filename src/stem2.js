@@ -1,4 +1,4 @@
-var synth = new Tone.PolySynth(3, Tone.SimpleSynth, {
+var synth2 = new Tone.PolySynth(3, Tone.SimpleSynth, {
                 "oscillator": {
                     "type": "sine",
                     "count": 3,
@@ -16,13 +16,12 @@ var synth = new Tone.PolySynth(3, Tone.SimpleSynth, {
 
             // fullsong.loop = true; // 
             // fullsong.loopEnd = 300; 
-            Tone.Transport.bpm.value = 124; 
-            Tone.Transport.start(); 
+          
 
 
             
 var stem2 = new Tone.Part(function(time, note){
-      synth.triggerAttackRelease(note.noteName, note.duration, time, note.velocity);
+      synth2.triggerAttackRelease(note.noteName, note.duration, time, note.velocity);
     }, [
   //   {
   // "softsquareLead": [
