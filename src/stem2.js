@@ -11,7 +11,8 @@ var synth = new Tone.PolySynth(3, Tone.SimpleSynth, {
                     "release": 0.4,
                     "attackCurve": "exponential"
                 },
-            }).toMaster(); 
+            })
+// .toMaster(); 
 
             // fullsong.loop = true; // 
             // fullsong.loopEnd = 300; 
