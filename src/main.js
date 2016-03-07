@@ -78,7 +78,13 @@ Tone.Transport.bpm.value = 124;
 
 
 
-///////////////////FUNCTIONS/////////////////////////////////////
+
+
+///////////////FUNCTIONS////////////////////////////////////////////
+////////////////////FUNCTIONS///////////////////////////////////////
+////////////////////////FUNCTIONS///////////////////////////////////
+
+
 
 
 function bmpFaster() {
@@ -91,11 +97,13 @@ function bmpSlower() {
     console.log("changed bpm to: " + Tone.Transport.bpm.value)
 }
 
+//change this to a toggle for each stem
 function startSong() {
     Tone.Transport.start();
     synth2.volume.exponentialRampToValue(0, 2);
     console.log('Transport was started')
 }
+
 
 
 function toggleSound(index) {
