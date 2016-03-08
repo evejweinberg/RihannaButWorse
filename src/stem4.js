@@ -1,4 +1,4 @@
-synth2 = new Tone.PolySynth(3, Tone.SimpleSynth, {
+synth4 = new Tone.PolySynth(3, Tone.SimpleSynth, {
                 "oscillator": {
                     "type": "sine",
                     "count": 3,
@@ -14,8 +14,8 @@ synth2 = new Tone.PolySynth(3, Tone.SimpleSynth, {
             })
 
 
-var stem2 = new Tone.Part(function(time, note){
-      synth2.triggerAttackRelease(note.noteName, note.duration, time, note.velocity);
+var stem4 = new Tone.Part(function(time, note){
+      synth4.triggerAttackRelease(note.noteName, note.duration, time, note.velocity);
     }, [
   //   {
   // "tonewheel organ": [
