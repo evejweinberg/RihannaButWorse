@@ -1,10 +1,13 @@
 //THIS IS OUR API, WHERE WE CREATE ALL FUNCTIONS TO MANIPULATE THE WHOLE SONG
-
+//////◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆//////
+/////◼///◼///◼///◼///◼///◼///◼///◼///◼///◼///◼////◼////
 
 
 // window.onload = function() {
 
-/////////CREATE EVERYTHING WE NEED/////////////////////
+//◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆FIRST ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆
+//◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆CREATE EVERYTHING WE NEED◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆
+//◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆
 
 
 var effects = []; //global effects for whole song at once
@@ -15,10 +18,21 @@ var instruments = [synth0, synth1, synth2, synth3, synth4, synth5]; //1 instrume
 //create the effects individually
 effects[0] = new Tone.Freeverb();
 effects[1] = new Tone.BitCrusher(1);
-var fft = new Tone.Analyser(32, "fft");
-console.log('fftsize is : ' + fft.size)
+//make an array of FFTs?
+
+var fftArray = [];
+
+//must be a power of 2
+//splits freq spectrum from low to high, euqually, amongst 32 bins, low pass to high pass
+// console.log('fftsize is : ' + fft.size)
 //store the size of the effects array    
 var numberEffects = effects.length;
+
+
+for (var i = 0; i < instruments.length; i++) {
+    var fft = new Tone.Analyser(32, "fft");
+    fftArray.push(fft);
+}
 
 //connect the synth to the effects
 for (var i = 0; i < numberEffects; i++) {
@@ -39,7 +53,7 @@ for (var i = 0; i <= numberEffects; i++) {
     switches[i] = new Tone.Switch(false);
 
     //connect the switches to master
-    switches[i].fan(fft).toMaster();
+    switches[i].connect(fftArray[i]).toMaster();
 
     if (i < numberEffects) {
         //connect effects to switches
@@ -66,7 +80,7 @@ for (var i = 0; i <= numberEffects; i++) {
 
 function makeButtons(type, i) {
     // console.log('making button ' + type)
-        //Create an input type dynamically.   
+    //Create an input type dynamically.   
     var element = document.createElement("button");
     element.id = type;
     element.onclick = function() {
@@ -78,22 +92,26 @@ function makeButtons(type, i) {
 }
 
 
+//◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ DONE ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆
+//◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆CREATING EVERYTHING WE NEED◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆
+//◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆
 
-//EVERYTHING HAS BEEN CREATED
-////////////////////////////////////////
+
+
 //#######START THE SONG#######//
 //if this is here then song starts right away with Dry on, the rest are off
 Tone.Transport.start();
 Tone.Transport.bpm.value = 124;
+//#######//#######//#######//#######
 
 
 
 
 
-
-///////////////FUNCTIONS////////////////////////////////////////////
-////////////////////FUNCTIONS///////////////////////////////////////
-////////////////////////FUNCTIONS///////////////////////////////////
+//◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ 
+// ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ //CREATE ALL// ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ //
+// ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ //FUNCTIONS// ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ //
+//◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼ ◼
 
 
 /*
@@ -109,9 +127,9 @@ function bmpSlower() {
     // console.log("changed bpm to: " + Tone.Transport.bpm.value)
 }
 
-
-
-
+/*
+@private -- global effects for all stems
+ */
 function toggleGlobalEffects(index) {
 
     //switch from 0 to 1, vice cersa
@@ -120,8 +138,8 @@ function toggleGlobalEffects(index) {
     for (var i = 0; i < toggles.length; i++) {
         switches[i].gate.value = toggles[i];
     }
-
 }
+
 
 /*
 @private -- toggle volume for each stem
@@ -145,12 +163,11 @@ function checkAllVolumes(clickedButtonNumber) {
             Stem4Off();
         }
 
-
     } //if volume was off, turn it on
     else {
         instruments[clickedButtonNumber].volume.exponentialRampToValue(0, 2);
         console.log(clickedButtonNumber + " is now on")
-           if (clickedButtonNumber == 0) {
+        if (clickedButtonNumber == 0) {
             Stem0On();
         } else if (clickedButtonNumber == 1) {
             Stem1On();
@@ -205,18 +222,31 @@ function Stem4Off() {
 }
 
 
-// }//everything done
-function drawFFT(values){
-                
-                    FFTval = values[i] / 255;
-                    console.log(FFTval)
-                    
-                }
+////FFT stuff
 loop();
-function loop(){
-                requestAnimationFrame(loop);
-                //get the fft data and draw it
-                var fftValues = fft.analyse();
-                drawFFT(fftValues);
-                }
 
+function drawFFT(values,i) {
+    for (var i = 0, len = values.length; i < len; i++) {
+        FFTval = values[i] / 255;
+         // console.log(values)
+         //32 values per track, var i tells me which stem
+    }
+   
+}
+
+function loop() {
+    // console.log(instruments.length)
+    //is this a recursive function?
+    
+    //get the fft data and draw it
+    ////keep var i local
+    for (var i =0; i< instruments.length; i++) {
+        // console.log(i)
+        var fftValues = fftArray[i].analyse();
+        drawFFT(fftValues,i);
+    }
+    requestAnimationFrame(loop);
+}
+
+
+// }//END WINDOW LOAD STATEMENT
