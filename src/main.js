@@ -25,7 +25,8 @@
 //array for holding the effects
 var effects = [];
 var toggles = [];
-var switches = []; //Tone switches boolesn 0/1 
+var switches = []; //Tone switches boolesn 0/1
+var instruments = [synth0, synth1, synth2, synth3]; //1 instrument per stem 
 
 //create the effects individually
 effects[0] = new Tone.Freeverb();
@@ -36,10 +37,12 @@ var numberEffects = effects.length;
 
 //connect the synth to the effects
 for (var i = 0; i < numberEffects; i++) {
-    synth2.connect(effects[i]);
-    console.log('connected effect #' + i + ' to synth2')
-    synth3.connect(effects[i]);
-    console.log('connected effect #' + i + ' to synth3')
+    for (j in instruments) {
+        // console.log('hi')
+        instruments[j].connect(effects[i]);
+        // console.log(instruments[j]+ " , "+ effects[i])
+
+    }
 }
 
 
@@ -61,18 +64,25 @@ for (var i = 0; i <= numberEffects; i++) {
     } else {
         //connect the last switch to the original synth
         //and open it's gate
-        synth2.connect(switches[numberEffects]);
-        switches[i].gate.value = 1;
-        toggles[i] = 1;
+        for (j in instruments) {
+
+            // console.log('there is a synth to start')
+            instruments[j].connect(switches[numberEffects]);
+            switches[i].gate.value = 1;
+            toggles[i] = 1;
+            instruments[j].volume.exponentialRampToValue(0, 2);
+            // console.log(instruments[j] + " is starting " + toggles[i])
+
+        }
     }
 
-    console.log('toggle'+ i+" is starting at "+ switches[i].gate.value)
+    // console.log('toggle' + i + " is starting at " + switches[i].gate.value)
 
 }
 
 //if this is here then song starts right away with Dry on, the rest are off
 Tone.Transport.start();
-synth2.volume.exponentialRampToValue(0, 2);
+
 Tone.Transport.bpm.value = 124;
 
 
@@ -85,23 +95,26 @@ Tone.Transport.bpm.value = 124;
 ////////////////////////FUNCTIONS///////////////////////////////////
 
 
-
-
+/*
+@private -- change the global master BMP
+ */
 function bmpFaster() {
     Tone.Transport.bpm.value += 10;
-    console.log("changed bpm to: " + Tone.Transport.bpm.value)
+    // console.log("changed bpm to: " + Tone.Transport.bpm.value)
 }
 
 function bmpSlower() {
     Tone.Transport.bpm.value -= 10;
-    console.log("changed bpm to: " + Tone.Transport.bpm.value)
+    // console.log("changed bpm to: " + Tone.Transport.bpm.value)
 }
 
-//change this to a toggle for each stem
+
+/*
+@private -- toggle volume for each stem
+ */
 function startSong() {
     Tone.Transport.start();
     synth2.volume.exponentialRampToValue(0, 2);
-    console.log('Transport was started')
 }
 
 
@@ -113,9 +126,21 @@ function toggleSound(index) {
 
     for (var i = 0; i < toggles.length; i++) {
         switches[i].gate.value = toggles[i];
-        console.log('toggle' + i + 'is now:' + switches[i].gate.value)
     }
 
+}
+
+function checkAllVolumes(clickedButtonNumber) {
+
+    console.log('clicked button is  ' + clickedButtonNumber)
+        //this.id == "stem" + clickedButtonNumber &&
+    if (instruments[clickedButtonNumber].volume.value >= 0) {
+        console.log(instruments[clickedButtonNumber])
+        instruments[clickedButtonNumber].volume.exponentialRampToValue(-100, 2);
+
+    } else {
+        instruments[clickedButtonNumber].volume.exponentialRampToValue(0, 2);
+    }
 }
 
 

@@ -1,21 +1,21 @@
-synth2 = new Tone.PolySynth(3, Tone.SimpleSynth, {
+synth3 = new Tone.PolySynth(3, Tone.SimpleSynth, {
                 "oscillator": {
-                    "type": "sine",
+                    "type": "sawtooth8",
                     "count": 3,
                     "spread": 30
                 },
                 "envelope": {
                     "attack": 0.01,
-                    "decay": 0.1,
+                    "decay": 5.1,
                     "sustain": 0.5,
-                    "release": 0.4,
+                    "release": 5.4,
                     "attackCurve": "exponential"
                 },
             })
 
 
-var stem2 = new Tone.Part(function(time, note){
-      synth2.triggerAttackRelease(note.noteName, note.duration, time, note.velocity);
+var stem3 = new Tone.Part(function(time, note){
+      synth3.triggerAttackRelease(note.noteName, note.duration, time, note.velocity);
     }, [
   //   {
   // "tonewheel organ": [

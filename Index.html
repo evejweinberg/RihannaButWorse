@@ -8,38 +8,46 @@
     <link rel="icon" type="image/png" sizes="174x174" href="./style/favicon.png">
     <script type="text/javascript" src="https://tonejs.github.io/CDN/r6/Tone.min.js"></script>
     <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
 </head>
 
 <body>
     <div id="Content">
         <div id="Title">Rihanna but Worse, Turn one on</div>
-        <button onclick="toggleSound(2)">DRY</button>
+        <button onclick="toggleSound(2)">on/off</button>
         <button onclick="toggleSound(0)">FREEVERB</button>
         <button onclick="toggleSound(1)">BITCRUSHER</button>
         <button onclick="startSong()">start stem2</button>
         <button onclick="bmpFaster()">FASTER</button>
         <button onclick="bmpSlower()">SLOW YOUR ROLL RI</button>
     </div>
-
-    
     <!-- attach all javascript files here -->
     <script src="src/stem2.js"></script>
     <script src="src/stem3.js"></script>
     <script src="src/stem4.js"></script>
+    <script src="src/stem5.js"></script>
     <script src="src/fullsong.js"></script>
     <script src="src/main.js"></script>
-
-
     <script type="text/javascript">
-    // try not to do any JS scripting in the index
+
+    //make 10 buttons to control the 10 tracks
+    for (var i = 0; i < 10; i++) {
+        makeButtons("stem " + i, i);
+
+    }
+
+    function makeButtons(type, i) {
+        console.log('making button ' + type)
+            //Create an input type dynamically.   
+        var element = document.createElement("button");
+        element.id = type;
+        element.onclick = function() {
+            checkAllVolumes(i)
+        };
+        element.appendChild(document.createTextNode(String(type)))
+        document.getElementById("Content").appendChild(element);
+
+    }
     </script>
-
-
-
-
-
-
 </body>
 
 </html>
