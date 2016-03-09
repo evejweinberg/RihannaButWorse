@@ -18,95 +18,110 @@
 var FFTval = 0;
 
 
-// //threeJS variables
-// var container, stats;
-// var camera, scene, raycaster, renderer;
-// var mouse = new THREE.Vector2(),
-//     INTERSECTED;
-// var radius = 100,
-//     theta = 0;
-// var scaleX, scaleY;
-// var allcubes = [];
+//threeJS variables
+var container, stats;
+var camera, scene, raycaster, renderer;
+var mouse = new THREE.Vector2(),
+    INTERSECTED;
+var radius = 100,
+    theta = 0;
+var scaleX, scaleY;
+var allcubes = [];
+var allcubesinOneFFT = [];
+var controls;
 
 
-// init();
-// animate();
+init();
+animate();
 
-// function init() {
+function init() {
 
-//     container = document.createElement('div');
-//     document.body.appendChild(container);
+    container = document.createElement('div');
+    document.body.appendChild(container);
 
-//     // var info = document.createElement( 'div' );
-//     // info.style.position = 'absolute';
-//     // info.style.top = '10px';
-//     // info.style.width = '100%';
-//     // info.style.textAlign = 'center';
-//     // info.innerHTML = '<a href="http://threejs.org" target="_blank">three.js</a> webgl - interactive cubes';
-//     // container.appendChild( info );
+    // var info = document.createElement( 'div' );
+    // info.style.position = 'absolute';
+    // info.style.top = '10px';
+    // info.style.width = '100%';
+    // info.style.textAlign = 'center';
+    // info.innerHTML = '<a href="http://threejs.org" target="_blank">three.js</a> webgl - interactive cubes';
+    // container.appendChild( info );
 
-//     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 10000);
+    camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 10000);
+    scene = new THREE.Scene();
 
-//     scene = new THREE.Scene();
+    var light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(1, 1, 1).normalize();
+    scene.add(light);
 
-//     var light = new THREE.DirectionalLight(0xffffff, 1);
-//     light.position.set(1, 1, 1).normalize();
-//     scene.add(light);
+    var geometry = new THREE.BoxGeometry(20, 20, 20);
 
-//     var geometry = new THREE.BoxGeometry(20, 20, 20);
+    //build the cubes here
 
-//     for (var i = 0; i < 100; i++) {
+    // for (var j = 0; j < instruments.length; j++) {
+        for (var i = 0; i < 32; i++) {
 
-//         var object = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff }));
+            var object = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff }));
 
-//         object.position.x = Math.random() * 800 - 400;
-//         object.position.y = Math.random() * 800 - 400;
-//         object.position.z = Math.random() * 800 - 400;
+            object.position.x = -2500 + (130 * i);
+            object.position.y = 1000 - (500 * j);
+            object.position.z = -3000 + (-200 * j);
 
-//         object.rotation.x = Math.random() * 2 * Math.PI;
-//         object.rotation.y = Math.random() * 2 * Math.PI;
-//         object.rotation.z = Math.random() * 2 * Math.PI;
+            object.rotation.x = 0;
+            object.rotation.y = 0;
+            object.rotation.z = 0;
 
-//         object.scale.x = Math.random() + 12 * FFTval;
-//         object.scale.y = Math.random() + 20 * FFTval;
-//         object.scale.z = Math.random() + 0.5;
+            object.scale.x = 5;
+            object.scale.y = 5;
+            object.scale.z = 20;
 
-//         scene.add(object);
-//         allcubes.push(object);
-//         console.log(allcubes.length + 'is cubes array length')
+            scene.add(object);
+            allcubesinOneFFT[j] = [];
+            allcubesinOneFFT[j].push(object);
+            // console.log(allcubesinOneFFT[j])
+            //console.log(allcubes.length + 'is cubes array length')
+            // console.log(allcubesinOneFFT.length)
 
-//     }
 
-//     raycaster = new THREE.Raycaster();
+        }
+        // allcubes.push(allcubesinOneFFT[j]);
+    // }
 
-//     renderer = new THREE.WebGLRenderer();
-//     renderer.setClearColor(0xf0f0f0);
-//     renderer.setPixelRatio(window.devicePixelRatio);
-//     renderer.setSize(window.innerWidth, window.innerHeight);
-//     renderer.sortObjects = false;
-//     container.appendChild(renderer.domElement);
+    // raycaster = new THREE.Raycaster();
 
-//     stats = new Stats();
-//     // stats.domElement.style.position = 'absolute';
-//     // stats.domElement.style.top = '0px';
-//     // container.appendChild( stats.domElement );
+    renderer = new THREE.WebGLRenderer();
+    renderer.setClearColor(0xf0f0f0);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.sortObjects = false;
+    container.appendChild(renderer.domElement);
 
-//     document.addEventListener('mousemove', onDocumentMouseMove, false);
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.25;
+    controls.enableZoom = false;
 
-//     //
+    stats = new Stats();
+    stats.domElement.style.position = 'absolute';
+    stats.domElement.style.top = '100px';
+    container.appendChild(stats.domElement);
 
-//     window.addEventListener('resize', onWindowResize, false);
+    // document.addEventListener('mousemove', onDocumentMouseMove, false);
 
-// }
+    //
 
-// function onWindowResize() {
+    window.addEventListener('resize', onWindowResize, false);
 
-//     camera.aspect = window.innerWidth / window.innerHeight;
-//     camera.updateProjectionMatrix();
+} //init ends
 
-//     renderer.setSize(window.innerWidth, window.innerHeight);
+function onWindowResize() {
 
-// }
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+}
 
 // function onDocumentMouseMove(event) {
 
@@ -118,59 +133,70 @@ var FFTval = 0;
 // }
 
 
-// function animate() { //looping recursive function, call yourself and call the render function
+function animate() { //looping recursive function, call yourself and call the render function
 
-//     requestAnimationFrame(animate);
+    requestAnimationFrame(animate);
 
-//     render();
-//     stats.update();
 
-// }
+    controls.update();
 
-// function render() { //this is where you add animation
+    stats.update();
 
-//     for (var i = 0; i < allcubes.length; i++) {
+    render();
 
-//         allcubes[i].scale.x = 22 * FFTval;
-//         allcubes[i].scale.y = 4 * FFTval;
-//     }
+}
 
-//     theta += 0.1;
+function render() { //this is where you add animation
 
-//     camera.position.x = radius * Math.sin(THREE.Math.degToRad(theta));
-//     camera.position.y = radius * Math.sin(THREE.Math.degToRad(theta));
-//     camera.position.z = radius * Math.cos(THREE.Math.degToRad(theta));
-//     camera.lookAt(scene.position);
 
-//     camera.updateMatrixWorld();
 
-//     // find intersections
-//     //raycast from camera to the objects and mouse intersects them
-//     raycaster.setFromCamera(mouse, camera);
+    for (var i = 0; i < allcubes.length; i++) {
+        for (var j = 0; j < allcubesinOneFFT[i].length; j++) {
 
-//     var intersects = raycaster.intersectObjects(scene.children);
+            //this works but how to we add the FFT values?
+            allcubesinOneFFT[i][j].scale.y = 5 + 22 * FFTval;
 
-//     if (intersects.length > 0) {
 
-//         if (INTERSECTED != intersects[0].object) {
+        }
+    }
 
-//             if (INTERSECTED) INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex);
+    theta += 0.1;
 
-//             INTERSECTED = intersects[0].object;
-//             INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
-//             INTERSECTED.material.emissive.setHex(0xff0000);
+    // camera.position.x = radius * Math.sin(THREE.Math.degToRad(theta));
+    // camera.position.y = radius * Math.sin(THREE.Math.degToRad(theta));
+    // camera.position.z = radius * Math.cos(THREE.Math.degToRad(theta));
 
-//         }
+    // camera.lookAt(scene.position);
+    // camera.updateMatrixWorld();
 
-//     } else {
+    // find intersections
+    //raycast from camera to the objects and mouse intersects them
 
-//         if (INTERSECTED) INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex);
+    // raycaster.setFromCamera(mouse, camera);
 
-//         INTERSECTED = null;
+    // var intersects = raycaster.intersectObjects(scene.children);
 
-//     }
+    // if (intersects.length > 0) {
 
-//     //not sure about what this line does yet
-//     renderer.render(scene, camera);
+    //     if (INTERSECTED != intersects[0].object) {
 
-// }
+    //         if (INTERSECTED) INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex);
+
+    //         INTERSECTED = intersects[0].object;
+    //         INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+    //         INTERSECTED.material.emissive.setHex(0xff0000);
+
+    //     }
+
+    // } else {
+
+    //     if (INTERSECTED) INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex);
+
+    //     INTERSECTED = null;
+
+    // }
+
+    //not sure about what this line does yet
+    renderer.render(scene, camera);
+
+}

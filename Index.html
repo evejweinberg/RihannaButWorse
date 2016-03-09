@@ -5,11 +5,20 @@
     <meta charset="utf-8">
     <title>Rihanna but Worse</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="icon" type="image/png" sizes="174x174" href="./style/favicon.png">
-    <script type="text/javascript" src="https://tonejs.github.io/CDN/r6/Tone.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+    <!-- <link rel="icon" type="image/png" sizes="174x174" href="./style/favicon.png"> -->
+    <!-- <script type="text/javascript" src="https://tonejs.github.io/CDN/r6/Tone.min.js"></script> -->
+    <LINK REL=StyleSheet HREF="src/style.css" TYPE="text/css">
+
+    <script src="libs/Tone.min.js"></script>
+    <script src="libs/jquery-1.12.0.min.js"></script>
+    <script src="libs/rune.js"></script>
+     <script src="libs/interface.js"></script>
+
+
+    <!-- <script src="//code.jquery.com/jquery-1.12.0.min.js"></script> -->
       <script src="libs/three.min.js"></script>
         <script src="libs/stats.min.js"></script>
+        <script src="libs/orbitcontroller.js"></script>
 </head>
 
 <body>
@@ -18,8 +27,8 @@
         <button onclick="toggleGlobalEffects(2)">on/off</button>
         <button onclick="toggleGlobalEffects(0)">FREEVERB</button>
         <button onclick="toggleGlobalEffects(1)">BITCRUSHER</button>
-        <button onclick="bmpFaster()">FASTER</button>
-        <button onclick="bmpSlower()">SLOW YOUR ROLL RI</button>
+        <button onclick="bpmFaster()">FASTER</button>
+        <button onclick="bpmSlower()">SLOW YOUR ROLL RI</button>
     </div>
     <!-- attach all javascript files here -->
     <script src="src/stem0.js"></script>
@@ -28,15 +37,23 @@
     <script src="src/stem3.js"></script>
     <script src="src/stem4.js"></script>
     <script src="src/stem5.js"></script>
+    <script src="src/stem6.js"></script>
+    <script src="src/stem7.js"></script>
+    <script src="src/stem8.js"></script>
+    <script src="src/stem9.js"></script>
+    <script src="src/stem10.js"></script>
     <script src="src/fullsong.js"></script>
     <script type="text/javascript" src="src/audioApi.js"></script>
     <script src="src/main.js"></script>
     <script type="text/javascript">
     //make 10 buttons to control the 10 tracks
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 11; i++) {
         makeButtons("stem " + i, i);
+        makeSlowStemButtons("Slow " + i, i);
+        makeFastStemButtons("Fast " + i, i);
 
     }
+  
 
   
     </script>

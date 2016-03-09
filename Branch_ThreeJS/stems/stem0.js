@@ -1,4 +1,4 @@
-synth2 = new Tone.PolySynth(3, Tone.SimpleSynth, {
+synth0 = new Tone.PolySynth(3, Tone.SimpleSynth, {
                 "oscillator": {
                     "type": "sine",
                     "count": 3,
@@ -13,11 +13,26 @@ synth2 = new Tone.PolySynth(3, Tone.SimpleSynth, {
                 },
             })
 
+          
 
-var stem2 = new Tone.Part(function(time, note){
-      synth.triggerAttackRelease(note.noteName, note.duration, time, note.velocity);
+//midi was blank
+            
+var stem0 = new Tone.Part(function(time, note){
+      synth0.triggerAttackRelease(note.noteName, note.duration, time, note.velocity);
     }, [
-    
+
+    {
+      "time": "576i",
+      "midiNote": 58,
+      "noteName": "A#3",
+      "velocity": 0.905511811023622,
+      "duration": "13i"
+    }
+
+
+
+
 
 
           ]).start(0);
+

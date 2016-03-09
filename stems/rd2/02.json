@@ -1,28 +1,5 @@
-synth2 = new Tone.PolySynth(3, Tone.SimpleSynth, {
-                "oscillator": {
-                    "type": "sine",
-                    "count": 3,
-                    "spread": 30
-                },
-                "envelope": {
-                    "attack": 0.01,
-                    "decay": 0.1,
-                    "sustain": 0.5,
-                    "release": 0.4,
-                    "attackCurve": "exponential"
-                },
-            })
-
-          
-//make this a bass sound!
-
-            
-var stem2 = new Tone.Part(function(time, note){
-      synth2.triggerAttackRelease(note.noteName, note.duration, time, note.velocity);
-    }, [
-    // {
+// {
 //   "03 - vintage synth bass": [
-//   first note in millis is 28sec,125 millis
     {
       "time": "2880i",
       "midiNote": 51,
@@ -4323,10 +4300,3 @@ var stem2 = new Tone.Part(function(time, note){
     }
 //   ]
 // }
-
-
-
-    
-
-
-          ]).start(0);
