@@ -7,8 +7,9 @@ var allobjects = [];
 var allFFTs = [];
 var allRows = [];
 var fftSpectrums = [];
-var instruments = [synth0, synth1, synth2, synth3, synth4, synth5, synth6, synth7, synth8, synth9, synth10, synth11, synth12, synth13];
 var effects = [];
+var instruments = [synth0, synth1, synth2, synth3, synth4, synth5, synth6, synth7, synth8, synth9, synth10, synth11, synth12, synth13];
+
 var switches = []; //Tone switches boolian 0/1
 effects[0] = new Tone.Freeverb();
 effects[1] = new Tone.BitCrusher(1);
@@ -16,11 +17,12 @@ var row1on = false;
 var thisRowsVolume = [];
 var AreRowsOn = [];
 
-InstantiateEverything();
+// InstantiateEverything();
 
-function InstantiateEverything(){
-  $( ".stem0" ).hide();
-}
+// function InstantiateEverything(){
+//   $(".stem0").hide();
+//   $("#video0").prop('muted', true);
+// }
 
 
 //make an fft analyzer for each instrument
@@ -89,7 +91,7 @@ loop();
 function init() {
     container = document.createElement('div');
     container.id = "threeJS";
-    container.backgroundColor="red";
+    container.backgroundColor = "red";
     container.style.zIndex = "-30"
     container.style.position = "absolute"
 
@@ -148,7 +150,7 @@ function init() {
 
             object.position.x = -1400 + (cubeWidth * 20 * i);
             object.position.y = 900 - (120 * j);
-            object.position.z = -1500;
+            object.position.z = -1000 - (cubeWidth * 20 * i);
 
             // object.rotation.x = 0;
             // object.rotation.y = 0;
@@ -171,8 +173,8 @@ function init() {
         // console.log('allrows' + allRows.length)
     }
 
-    renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setClearColor(0xfb50f0);
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setClearColor(0xab33a0, 0);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.sortObjects = false;
@@ -320,26 +322,30 @@ function update(allFFTspectrums) {
 
     for (var j = 0; j < instruments.length; j++) {
         for (var i = 0, len = 32; i < len; i++) {
-            allRows[j][i].scale.y = cubeHeight + 5 * allFFTspectrums[j][i] / 255;
+            allRows[j][i].scale.y = cubeHeight + 5 * (allFFTspectrums[j][i] / 255);
             //add the row0 , cube0, row0, cube1
             //make an FFTarray for the row. 
             thisRowsTotalFFT = thisRowsTotalFFT + allFFTspectrums[j][i]
                 // thisFFTTotal.push(thisRowsTotalFFT)
                 //add this number an array and add them all up
+                // if (allFFTspectrums[j][0])
 
         }
 
 
         //switch case goes here
-        thisRowsVolume[j] = thisRowsTotalFFT / 32;
-        // console.log("this rows' volume is " + thisRowsVolume[j]);
-        if (thisRowsVolume[j] == 0) {
-            // console.log(thisRowsVolume[j])
-            AreRowsOn[j] = false;
-        } else {
-            AreRowsOn[j] = true;
-            // console.log(AreRowsOn[j])
-        }
+        // thisRowsVolume[4] = thisRowsTotalFFT / 32;
+        // // console.log("this rows' volume is " + thisRowsVolume[1]);
+        // if (thisRowsVolume[4] <= 40) {
+        //     console.log('row1 vol is zero')
+        //     // console.log(thisRowsVolume[j])
+        //     AreRowsOn[4] = false;
+        // } else {
+        //     console.log('row4 vol is ON')
+        //     AreRowsOn[4] = true;
+        //     // console.log(AreRowsOn[j])
+        // }
+        // checkAllVolumes(j)
 
     }
 }
@@ -396,7 +402,7 @@ function bpmSlower() {
 
 function toggleGlobalEffects(index) {
     switches[index].gate.value = 1 - switches[index].gate.value
-    // console.log(switches[index].gate.value)
+        // console.log(switches[index].gate.value)
 }
 
 
@@ -408,79 +414,25 @@ function toggleGlobalEffects(index) {
 ////////////////////////////////////////////////////////////
 ///
 
-if (AreRowsOn[0] == true){
+if (AreRowsOn[0] == true) {
     Stem0On();
 } else {
     Stem0Off();
 }
 
-if (AreRowsOn[1] == true){
+if (AreRowsOn[1] == true) {
+    console.log('one is on')
     Stem1On();
 } else {
     Stem1Off();
 }
 
-
-function Stem0On() {
-       $("#video").show();
-    console.log('draw stem 0')
-      // r.draw();
-        //draw threeJs stuff here
-}
-
-function Stem1On() {
-      // r.draw();
-      $(".stem1").show();
-    console.log('draw stem 1')
-}
-
-function Stem2On() {
-    console.log('draw stem 2')
-}
-
-function Stem3On() {
-      // r.draw();
-    console.log('draw stem 3')
-}
-
-function Stem4On() {
-    console.log('draw stem 4')
-}
-
-function Stem5On() {
-    console.log('draw stem 4')
-}
-
-function Stem5On() {
-    console.log('draw stem 5')
+if (AreRowsOn[4] == true) {
+    console.log('one is on')
+    Stem4On();
+} else {
+    Stem4Off();
 }
 
 
 
-function Stem0Off() {
-    console.log('off stem 0')
-}
-
-function Stem1Off() {
-    console.log('off stem 1')
-}
-
-function Stem2Off() {
-    console.log('off stem 2')
-}
-
-function Stem3Off() {
-    console.log('off stem 3')
-}
-
-function Stem4Off() {
-    console.log('off stem 4')
-}
-
-function Stem5Off() {
-    console.log('off stem 5')
-}
-
-function Stem6Off() {
-    console.log('off stem 6')
-}

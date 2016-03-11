@@ -14,13 +14,21 @@
 		position: absolute;
 		top:0px;
 		left:0px;
-		/*z-index:99;*/
+		z-index:-99;
 	}
 
 	.stem0{
 		position: absolute;
 		top:0px;
-		left:0px;
+		left:200px;
+			z-index:-99;
+	}
+
+	.stem4{
+		position: absolute;
+		top:0px;
+		left:400px;
+			z-index:-99;
 	}
 
 	video{
@@ -30,5 +38,13 @@
 
 #threeJS{
 	position: absolute;
-	z-index: 30;
+	/*z-index: 30;*/
+		/*background-image: url("http://evejweinberg.github.io/samples/ArrowDownwardPink.gif");*/
+
+
 	}
+
+body{
+	background-image: url("http://evejweinberg.github.io/samples/ArrowDownwardPink.gif");
+	background-color: red;
+}
