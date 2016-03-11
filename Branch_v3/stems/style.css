@@ -1,0 +1,34 @@
+.button:active
+{
+  background-color: #E3E1B8; 
+}
+
+#canvas {
+	position: absolute;
+		margin-top: 2px;
+		width: 100%;
+		height: 255px;
+	}
+
+	.stem1{
+		position: absolute;
+		top:0px;
+		left:0px;
+		/*z-index:99;*/
+	}
+
+	.stem0{
+		position: absolute;
+		top:0px;
+		left:0px;
+	}
+
+	video{
+			position: absolute;
+
+	}
+
+#threeJS{
+	position: absolute;
+	z-index: 30;
+	}
