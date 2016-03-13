@@ -83,10 +83,10 @@ function Stem0On() {
 
 function Stem1On() {
 
-     $(".stem1").show();
+     // $(".stem1").show();
     
-    $("#video1").get(0).play();
-    $("#video1").prop('muted', true);
+    // $("#video1").get(0).play();
+    // $("#video1").prop('muted', true);
 
     console.log('draw stem 1')
 }
@@ -101,9 +101,9 @@ function Stem3On() {
 }
 
 function Stem4On() {
-	$(".stem4").show();
-    $("#video4").get(0).play();
-     $("#video4").prop('muted', true);
+	// $(".stem4").show();
+    // $("#video4").get(0).play();
+     // $("#video4").prop('muted', true);
     console.log('draw stem 4')
 }
 
@@ -125,8 +125,8 @@ function Stem0Off() {
 }
 
 function Stem1Off() {
-    $("#video1").get(0).pause();
-    $(".stem1").hide();
+    // $("#video1").get(0).pause();
+    // $(".stem1").hide();
     
     console.log('off stem 1')
 }
@@ -140,9 +140,9 @@ function Stem3Off() {
 }
 
 function Stem4Off() {
-	$("#video4").get(0).pause();
-    $(".stem4").hide();
-    $("#video4").prop('muted', true);
+	// $("#video4").get(0).pause();
+    // $(".stem4").hide();
+    // $("#video4").prop('muted', true);
     console.log('off stem 4')
 }
 

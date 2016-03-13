@@ -3,6 +3,15 @@
   background-color: #E3E1B8; 
 }
 
+#bg-video{
+	width:50%;
+	height:50%;
+	position: absolute;
+	left:25%;
+	top:30%;
+	z-index: -2000;
+}
+
 #canvas {
 	position: absolute;
 		margin-top: 2px;
@@ -45,6 +54,8 @@
 	}
 
 body{
+		/*background-image: url("video/FaceCU.mp4");*/
+
 	background-image: url("http://evejweinberg.github.io/samples/ArrowDownwardPink.gif");
-	background-color: red;
+	/*background-color: red;*/
 }

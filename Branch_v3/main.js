@@ -1,6 +1,7 @@
 //analyse the frequency/amplitude of the incoming signal    
 var cubeHeight = 1;
-var cubeWidth = 5;
+var cubeWidth = 16;
+var cubeDepth = 40;
 var instruments = [];
 var allcubesinOneFFT = [];
 var allobjects = [];
@@ -16,6 +17,7 @@ effects[1] = new Tone.BitCrusher(1);
 var row1on = false;
 var thisRowsVolume = [];
 var AreRowsOn = [];
+var framesPerSecond = 24;
 
 // InstantiateEverything();
 
@@ -96,22 +98,17 @@ function init() {
     container.style.position = "absolute"
 
     document.body.appendChild(container);
-    camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 10000);
+    camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight,1, 9000);
+  
     scene = new THREE.Scene();
     scene.add(new THREE.AmbientLight(0x505050));
-    controls = new THREE.TrackballControls(camera);
-    controls.rotateSpeed = 1.0;
-    controls.zoomSpeed = 1.2;
-    controls.panSpeed = 0.8;
-    controls.noZoom = false;
-    controls.noPan = false;
-    controls.staticMoving = true;
-    controls.dynamicDampingFactor = 0.3;
 
 
+
+  // camera.position.z = 1000;
     camera.rotateX(40);
     camera.rotateY(40);
-    camera.rotateZ(40);
+    // camera.rotateZ(40);
 
     // mouse = new THREE.Vector2();
     var light2 = new THREE.DirectionalLight(0xffffff, 1);
@@ -137,34 +134,42 @@ function init() {
 
 
     for (var j = 0; j < instruments.length; j++) {
+        var rotateX = Math.cos(Rune.radians(j*spacing))*radius
+            var rotateY = Math.sin(Rune.radians(j*spacing))*radius
 
         allcubesinOneFFT[j] = [];
 
         for (var i = 0; i < 32; i++) {
-            var color = new THREE.Color(((r * .032 * i) % 1).toFixed(2), ((g * .032 * j) % 1).toFixed(2), ((b * .032 * j) % 1).toFixed(2));
+            var color = new THREE.Color(((r * .032 * i) % 1).toFixed(2), ((g * .032 * i) % 1).toFixed(2), ((b * .032 * j) % 1).toFixed(2));
 
 
-            var object = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
+            var object = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
                 color: color
             }));
+            var radius = 700;
+            var spacing = 360/ (instruments.length-1)
+            
 
-            object.position.x = -1400 + (cubeWidth * 20 * i);
-            object.position.y = 900 - (120 * j);
-            object.position.z = -1000 - (cubeWidth * 20 * i);
+            object.position.x = -100 + rotateX;
+            object.position.y = rotateY;
+            object.position.z = 80-(i*cubeDepth*20)
 
-            // object.rotation.x = 0;
-            // object.rotation.y = 0;
-            // object.rotation.z = 0;
+            // object.position.z = 500 - (cubeWidth * 20 * i);
+
+            object.rotation.x = 0;
+            object.rotation.y = 0;
+            object.rotation.z = (j*5);
 
             object.scale.x = cubeWidth;
             object.scale.y = cubeHeight;
-            object.scale.z = 5;
+            object.scale.z = cubeDepth;
 
             scene.add(object);
             allobjects.push(object)
 
             allcubesinOneFFT[j].push(object);
             // console.log(allcubesinOneFFT[j].length)
+            // allcubesinOneFFT[j].rotate.x=30
 
 
 
@@ -182,12 +187,21 @@ function init() {
     renderer.shadowMap.type = THREE.PCFShadowMap;
     container.appendChild(renderer.domElement);
 
+    controls = new THREE.TrackballControls(camera);
+    controls.rotateSpeed = 1.0;
+    controls.zoomSpeed = 1.2;
+    controls.panSpeed = 0.8;
+    controls.noZoom = false;
+    controls.noPan = false;
+    controls.staticMoving = true;
+    controls.dynamicDampingFactor = 0.3;
+
     renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, false);
     renderer.domElement.addEventListener('mousedown', onDocumentMouseDown, false);
     renderer.domElement.addEventListener('mouseup', onDocumentMouseUp, false);
 
 
-    stats = new Stats();
+    // stats = new Stats();
     // stats.domElement.style.position = 'absolute';
     // stats.domElement.style.top = '100px';
     // container.appendChild(stats.domElement);
@@ -318,11 +332,11 @@ function render() {
 function update(allFFTspectrums) {
     var thisRowsTotalFFT = 0;
     var thisFFTTotal = [];
-
+camera.position.z = camera.position.z+.5
 
     for (var j = 0; j < instruments.length; j++) {
         for (var i = 0, len = 32; i < len; i++) {
-            allRows[j][i].scale.y = cubeHeight + 5 * (allFFTspectrums[j][i] / 255);
+            allRows[j][i].scale.y = cubeHeight + 20 * (allFFTspectrums[j][i] / 255);
             //add the row0 , cube0, row0, cube1
             //make an FFTarray for the row. 
             thisRowsTotalFFT = thisRowsTotalFFT + allFFTspectrums[j][i]
@@ -334,16 +348,17 @@ function update(allFFTspectrums) {
 
 
         //switch case goes here
+        //
         // thisRowsVolume[4] = thisRowsTotalFFT / 32;
         // // console.log("this rows' volume is " + thisRowsVolume[1]);
         // if (thisRowsVolume[4] <= 40) {
-        //     console.log('row1 vol is zero')
-        //     // console.log(thisRowsVolume[j])
+        //     // console.log('row4 vol < 40 ')
+        // //     // console.log(thisRowsVolume[j])
         //     AreRowsOn[4] = false;
         // } else {
-        //     console.log('row4 vol is ON')
+        //     // console.log('row4 vol is ON')
         //     AreRowsOn[4] = true;
-        //     // console.log(AreRowsOn[j])
+        // //     // console.log(AreRowsOn[j])
         // }
         // checkAllVolumes(j)
 
@@ -362,7 +377,7 @@ function loop() { //this is where we put all animation
     }
 
     controls.update();
-    stats.update();
+    // stats.update();
     update(fftSpectrums);
     render();
 

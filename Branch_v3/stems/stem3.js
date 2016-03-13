@@ -1,6 +1,6 @@
 synth3 = new Tone.PolySynth(3, Tone.SimpleSynth, {
                 "oscillator": {
-                    "type": "square16",
+                    "type": "square8",
                     "count": 3,
                     "spread": 30
                 },
