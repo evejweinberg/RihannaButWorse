@@ -1,20 +1,45 @@
-synth3 = new Tone.PolySynth(3, Tone.SimpleSynth, {
+
+var chorus3 = new Tone.Chorus({
+  
+    "frequency": 4,
+    "delayTime": 16,
+    "type": "triangle",
+    "depth": 1,
+    "feedback": 0.1,
+    "spread": 80
+
+});
+
+synth3 = new Tone.PolySynth(6, Tone.SimpleSynth, {
                 "oscillator": {
-                    "type": "square8",
-                    "count": 3,
-                    "spread": 30
+                    "type": "triangle",
+                    "count": 12,
+                    "spread": 10,
+                    "partials": [
+            1,
+            0,
+            2,
+            0,
+            3
+        ]
                 },
                 "envelope": {
                     "attack": 0.01,
-                    "decay": 0.1,
+                    "decay": 1.1,
                     "sustain": 0.5,
-                    "release": 0.4,
+                    "release": 1.4,
                     "attackCurve": "exponential"
                 },
+                
             })
+.connect(chorus3);
+
+synth3.set("frequency", 15);
+synth3.volume.value = -20;
+
+// synth3.frequency.value = 15;
 
           
-
 
             
 var stem3 = new Tone.Part(function(time, note){

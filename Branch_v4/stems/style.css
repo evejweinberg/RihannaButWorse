@@ -31,9 +31,7 @@
     top: 0px;
     left: 0px;
     z-index: -99;
-    /*display: none;*/
 }
-
 
 
 .stem2 {
@@ -80,6 +78,14 @@
     position: absolute;
     top: 600px;
     left: 200px;
+    z-index: -99;
+ 
+}
+
+.stem8 {
+    position: absolute;
+    top: 100px;
+    left: 500px;
     z-index: -99;
  
 }

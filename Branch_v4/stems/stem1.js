@@ -2,7 +2,14 @@ synth1 = new Tone.PolySynth(3, Tone.SimpleSynth, {
                 "oscillator": {
                     "type": "square8",
                     "count": 3,
-                    "spread": 30
+                    "spread": 30,
+                    "partials": [
+            1,
+            0,
+            2,
+            0,
+            3
+        ]
                 },
                 "envelope": {
                     "attack": 0.01,

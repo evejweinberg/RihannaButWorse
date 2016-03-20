@@ -1,6 +1,6 @@
 //analyse the frequency/amplitude of the incoming signal    
 var cubeHeight = 1;
-var cubeWidth = 16;
+var cubeWidth = 56;
 var cubeDepth = 40;
 var instruments = [];
 var allcubesinOneFFT = [];
@@ -14,10 +14,12 @@ var instruments = [synth0, synth1, synth2, synth3, synth4, synth5, synth6, synth
 var switches = []; //Tone switches boolian 0/1
 effects[0] = new Tone.Freeverb();
 effects[1] = new Tone.BitCrusher(1);
+effects[2] = chorus3;
 var row1on = false;
 var thisRowsVolume = [];
 var AreRowsOn = [];
 var framesPerSecond = 24;
+
 
 // InstantiateEverything();
 
@@ -77,6 +79,11 @@ Tone.Transport.bpm.value = 124;
 var container;
 var camera, controls, scene, renderer;
 var raycaster;
+var imgScreen, screens;
+var videoo, videoImage, videoImageContext, videoTexture;
+var videoIsLoaded = false;
+var lastTime = Date.now();
+var time;
 
 
 
@@ -87,11 +94,11 @@ var plane;
 
 
 init();
-$(function() { 
-    loop() 
+$(function() {
+    loop()
 });
 
-// animate();
+
 
 function init() {
     container = document.createElement('div');
@@ -109,8 +116,8 @@ function init() {
 
 
     // camera.position.z = 1000;
-    camera.rotateX(40);
-    camera.rotateY(40);
+    // camera.rotateX(40);
+    // camera.rotateY(40);
     // camera.rotateZ(40);
 
     // mouse = new THREE.Vector2();
@@ -121,7 +128,7 @@ function init() {
     raycaster = new THREE.Raycaster();
 
     var light = new THREE.SpotLight(0xffffff, 1.5);
-    light.position.set(0, 500, 2000);
+    light.position.set(0, 500, -2000);
     light.castShadow = true;
 
     light.shadowCameraNear = 200;
@@ -137,19 +144,23 @@ function init() {
 
 
     for (var j = 0; j < instruments.length; j++) {
+        var radius = 1700;
         var rotateX = Math.cos(Rune.radians(j * spacing)) * radius
         var rotateY = Math.sin(Rune.radians(j * spacing)) * radius
 
         allcubesinOneFFT[j] = [];
 
         for (var i = 0; i < 32; i++) {
-            var color = new THREE.Color(((r * .032 * i) % 1).toFixed(2), ((g * .032 * i) % 1).toFixed(2), ((b * .032 * j) % 1).toFixed(2));
+            var huerand = Math.floor((Math.random() * 4) + 0);
+            // console.log(huerand)
+            var color2 = new THREE.Color("hsl(" + hues[huerand] + ", 90%," + (lightness * i) % 100 + "%)");
+            // var color = new THREE.Color(((.030 * i) % 1).toFixed(2), ((.032 * i) % 1).toFixed(2), ((20) % 1).toFixed(2));
 
 
             var object = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
-                color: color
+                color: color2
             }));
-            var radius = 700;
+
             var spacing = 360 / (instruments.length - 1)
 
 
@@ -161,7 +172,7 @@ function init() {
 
             object.rotation.x = 0;
             object.rotation.y = 0;
-            object.rotation.z = (j * 5);
+            object.rotation.z = 50 + (Rune.radians(j * spacing));
 
             object.scale.x = cubeWidth;
             object.scale.y = cubeHeight;
@@ -171,13 +182,13 @@ function init() {
             allobjects.push(object)
 
             allcubesinOneFFT[j].push(object);
-       
+
 
 
 
         }
         allRows.push(allcubesinOneFFT[j]);
-    
+
     }
 
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -198,6 +209,37 @@ function init() {
     controls.staticMoving = true;
     controls.dynamicDampingFactor = 0.3;
 
+    videoo = document.createElement('video');
+    videoo.setAttribute("webkit-playsinline", "");
+    videoo.autoplay = true;
+    videoo.loop = true;
+    videoo.preload = "auto";
+    videoo.src = "video/PizzaAbs.mp4";
+    videoImage = document.createElement('canvas');
+    videoImage.width = 480;
+    videoImage.height = 480;
+    videoImageContext = videoImage.getContext('2d');
+    videoImageContext.fillStyle = '#ffffff';
+    videoImageContext.fillRect(0, 0, videoImage.width, videoImage.height);
+    videoTexture = new THREE.Texture(videoImage);
+    videoTexture.minFilter = THREE.LinearFilter;
+    videoTexture.magFilter = THREE.LinearFilter;
+    videoTexture.format = THREE.RGBFormat;
+    videoTexture.generateMipmaps = false;
+    videoTexture.wrapS = videoTexture.wrapT = THREE.ClampToEdgeWrapping;
+    videoTexture.needsUpdate = true;
+    geo = new THREE.PlaneGeometry(16, 9);
+    mat = new THREE.MeshBasicMaterial({ map: videoTexture, side: THREE.DoubleSide });
+    for (var i = 0; i < 100; i += 20) {
+        for (var j = 0; j < 100; j += 20) {
+            var mesh = new THREE.Mesh(geo, mat);
+            mesh.position.set(i, j, j)
+            scene.add(mesh);
+        }
+    }
+
+
+
     renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, false);
     renderer.domElement.addEventListener('mousedown', onDocumentMouseDown, false);
     renderer.domElement.addEventListener('mouseup', onDocumentMouseUp, false);
@@ -213,6 +255,16 @@ function init() {
 
 
 } //INIT ENDS
+
+var onTouchStart = function(event) {
+    if (!videoIsLoaded) {
+        videoo.load();
+        videoIsLoaded = true;
+    }
+    videoo.play();
+    // console.log("play video!");
+}
+
 
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -329,11 +381,19 @@ function onDocumentMouseUp(event) {
 function render() {
     renderer.render(scene, camera);
     controls.update();
+
+      if (videoo.readyState === videoo.HAVE_ENOUGH_DATA) {
+        videoImageContext.drawImage(videoo, 0, 0);
+        if (videoTexture)
+            videoTexture.needsUpdate = true;
+    }
+
 }
 
 function update(allFFTspectrums) {
     var thisRowsTotalFFT = 0;
     var thisFFTTotal = [];
+
     camera.position.z = camera.position.z + .5
 
     for (var j = 0; j < instruments.length; j++) {
@@ -341,21 +401,20 @@ function update(allFFTspectrums) {
 
 
         for (var i = 0, len = 32; i < len; i++) {
+            allRows[j][i].rotation.z = allRows[j][i].rotation.z + .002
             allRows[j][i].scale.y = cubeHeight + 20 * (allFFTspectrums[j][i] / 255);
-            //add the row0 , cube0, row0, cube1
-            //make an FFTarray for the row. 
+            
             thisRowsTotalFFT = thisRowsTotalFFT + (allFFTspectrums[j][i] / 255)
-                // thisFFTTotal.push(thisRowsTotalFFT)
-                //add this number an array and add them all up
-                // if (allFFTspectrums[j][0])
+
 
         }
 
 
-        if (j < 7) {
-            // console.log('average row'+ j +'is: ' +thisRowsTotalFFT/32)
-            if ((thisRowsTotalFFT / 32) > 0) {
+        if (j < 9) {
+            console.log(thisRowsTotalFFT / 32+" from row "+ j)
+            if ((thisRowsTotalFFT / 32) > 0.2) {
                 PlayStem('video' + j)
+                // console.log('play videos' + j)
             } else {
                 PauseStem('video' + j)
             }
@@ -370,6 +429,8 @@ function update(allFFTspectrums) {
 
 
 function loop() { //this is where we put all animation
+
+
     requestAnimationFrame(loop);
 
     for (i in instruments) {
@@ -384,32 +445,21 @@ function loop() { //this is where we put all animation
 
 }
 
-function ToggleRow1() {
-    // console.log(row1on)
-    if (row1on == true) {
-        // console.log(allcubesinOneFFT[0][0])
-        instruments[1].volume.exponentialRampToValue(-100, 2);
+// function ToggleRow1() {
+//     if (row1on == true) {
 
-        // allcubesinOneFFT[0][0].material.color.('rgb')
-        //turn row 1 off
-        for (var i = 0; i < allFFTs[0].length; i++) {
-            // console.log(allcubesinOneFFT[0][i])
+//         instruments[1].volume.exponentialRampToValue(-100, 2);
+//         for (var i = 0; i < allFFTs[0].length; i++) {}
 
-            // allcubesinOneFFT[0][i].material.color.setHex(#ffffff)
-        }
-
-    } else {
-        //turn row 1 on
-        // allcubesinOneFFT[0][i].material.color.setHex(#ef53e4)
-        instruments[1].volume.exponentialRampToValue(0, 2);
-    }
-}
+//     } else {
+//         instruments[1].volume.exponentialRampToValue(0, 2);
+//     }
+// }
 
 
 
 function bpmFaster() {
     Tone.Transport.bpm.value = Tone.Transport.bpm.value + 10
-        // console.log("changed bpm to: " + Tone.Transport.bpm.value)
 }
 
 function bpmSlower() {
@@ -418,14 +468,6 @@ function bpmSlower() {
 
 function toggleGlobalEffects(index) {
     switches[index].gate.value = 1 - switches[index].gate.value
-        // console.log(switches[index].gate.value)
+    // console.log(switches[index] + "is toggled")
+
 }
-
-
-
-/////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////
-//////////////MAKE THIS ART IN EACH STEM /////////////////////
-/////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////
-///
