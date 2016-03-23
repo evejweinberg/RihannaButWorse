@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Rihanna But Worse</title>
+    <script src="../libs/Tone.min.js"></script>
+    <script src="../libs/jquery-1.12.0.min.js"></script>
+    <script src="../libs/rune.js"></script>
+    <script src="../libs/interface.js"></script>
+    <script src="../libs/three.min.js"></script>
+    <script src="../libs/stats.min.js"></script>
+    <script src="../libs/orbitcontroller.js"></script>
+    <script src="../libs/TrackballControls.js"></script>
+    <script src="../libs/detector.js"></script>
+    <link rel="stylesheet" type="text/css" href="stems/style.css">
+    <style type="text/css">
+    /*canvas {
+        margin-top: 2px;
+        width: 100%;
+        height: 255px;
+    }*/
+    </style>
+</head>
+
+<body>
+<video id="bg-video" width="920" height="1800" src="video/FaceCU.mp4" autoplay loop></video>
+    <div id="Content">
+
+        <!-- <div id="Title">Rihanna but Worse, Turn one on</div> -->
+        <button onclick="toggleGlobalEffects(2)">on/off</button>
+        <button onclick="toggleGlobalEffects(0)">FREEVERB</button>
+        <button onclick="toggleGlobalEffects(1)">BITCRUSHER</button>
+        <button onclick="bpmFaster()">FASTER</button>
+        <button onclick="bpmSlower()">SLOW YOUR ROLL RI</button>
+    </div>
+    <script src="stems/stem0.js"></script>
+    <script src="stems/stem1.js"></script>
+    <script src="stems/stem2.js"></script>
+    <script src="stems/stem3.js"></script>
+    <script src="stems/stem4.js"></script>
+    <script src="stems/stem5.js"></script>
+    <script src="stems/stem6.js"></script>
+    <script src="stems/stem7.js"></script>
+    <script src="stems/stem8.js"></script>
+    <script src="stems/stem9.js"></script>
+    <script src="stems/stem10.js"></script>
+    <script src="stems/stem10.js"></script>
+    <script src="stems/stem11.js"></script>
+    <script src="stems/stem12.js"></script>
+    <script src="stems/stem13.js"></script>
+    <script src="stems/stem14.js"></script>
+    <script src="stems/stem15.js"></script>
+    <script src="global.js"></script>
+    <!-- <script src="2dgraphics.js"></script> -->
+    <script src="main.js"></script>
+    <video muted="true" width="320" height="240" autoplay="autoplay" loop>
+        <source src="https://youtu.be/U0CGsw6h60k" type="video/mp4"> Your browser does not support the video tag.
+    </video>
+    <!-- <video src="video/stem0.mp4" autoplay="autoplay" loop class="stem0" id="video0"> -->
+        <video src="video/stem1.mov" autoplay="autoplay" loop class="stem1" id="video1"></video>
+            <video src="video/stem4.mp4" autoplay="autoplay" loop class="stem4" id="video4"></video>
+                <video src="https://youtu.be/U0CGsw6h60k" class="stem1" id="video1" hidden="hidden"></video>
+                    <!-- <div id="canvas"></div> -->
+                    <div id="threeJS">
+                        <canvas style="width: 1972px; height: 2786px;z-index: -30;position: absolute;">
+                    </div>
+</body>
+
+</html>

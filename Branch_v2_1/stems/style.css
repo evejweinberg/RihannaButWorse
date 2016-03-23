@@ -1,0 +1,10 @@
+.button:active
+{
+  background-color: #E3E1B8; 
+}
+
+canvas {
+		margin-top: 2px;
+		width: 100%;
+		height: 255px;
+	}
